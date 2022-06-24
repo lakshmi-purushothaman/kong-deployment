@@ -2,9 +2,8 @@
 
 ## Amazon CLI
 
-```
-
 # Run Amazon CLI
+```
 docker run -it --rm -v ${PWD}:/work -w /work --entrypoint /bin/sh amazon/aws-cli:latest
 
 cd TA2/kubernetes/amazon/
@@ -38,22 +37,24 @@ Default output format [None]: json
 - In AWS this is an IAM role 
     - Follow "Create your Amazon EKS cluster IAM role" [here](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html) 
 
-```
 
-# create our role for EKS
+
+## Create role for EKS
+```
 role_arn=$(aws iam create-role --role-name getting-started-eks-role --assume-role-policy-document file://assume_policy.json | jq .Role.Arn | sed s/\"//g)
 aws iam attach-role-policy --role-name getting-started-eks-role --policy-arn arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
-
-# create the cluster VPC
-
+```
+### Create the cluster VPC
+```
 curl https://amazon-eks.s3.us-west-2.amazonaws.com/cloudformation/2020-05-08/amazon-eks-vpc-sample.yaml -o vpc.yaml
 aws cloudformation deploy --template-file vpc.yaml --stack-name kong-ta2-eks
-
-# To grab your stack details 
+```
+## To grab your stack details 
+```
 aws cloudformation list-stack-resources --stack-name kong-ta2-eks > stack.json
-
-# create our cluster
-
+```
+### Create EKS cluster
+```
 aws eks create-cluster \
 --name kong-ta2-eks \
 --role-arn $role_arn \
