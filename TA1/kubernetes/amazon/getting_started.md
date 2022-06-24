@@ -17,13 +17,14 @@ yum install jq gzip nano tar git
 https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html
 
 
-# Navigate to "My Security Credentials" section in your profile. 
-# Create an access key and make note of accesskey and secret
-# Choose a AWS Region to use from the list
+- Navigate to "My Security Credentials" section in your profile. 
+- Create an access key and make note of accesskey and secret
+- Choose a AWS Region to use from the list
 https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html
 
 ```
 aws configure
+
 AWS Access Key ID [None]: AWS Access Key
 AWS Secret Access Key [None]: AWS Secret
 Default region name [None]: eu-west-2
