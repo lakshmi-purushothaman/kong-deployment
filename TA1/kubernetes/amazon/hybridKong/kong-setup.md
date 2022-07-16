@@ -43,41 +43,7 @@ helm repo update
 ### Install the Control Plane
 
 ```
-helm install kong kong/kong -n kong \
---set ingressController.enabled=true \
---set ingressController.installCRDs=false \
---set ingressController.image.repository=kong/kubernetes-ingress-controller \
---set ingressController.image.tag=2.0.1 \
---set image.repository=kong/kong-gateway \
---set image.tag=2.6.0.0-alpine \
---set env.database=postgres \
---set env.role=control_plane \
---set env.cluster_cert=/etc/secrets/kong-cluster-cert/tls.crt \
---set env.cluster_cert_key=/etc/secrets/kong-cluster-cert/tls.key \
---set cluster.enabled=true \
---set cluster.tls.enabled=true \
---set cluster.tls.servicePort=8005 \
---set cluster.tls.containerPort=8005 \
---set clustertelemetry.enabled=true \
---set clustertelemetry.tls.enabled=true \
---set clustertelemetry.tls.servicePort=8006 \
---set clustertelemetry.tls.containerPort=8006 \
---set proxy.enabled=true \
---set admin.enabled=true \
---set admin.http.enabled=true \
---set admin.type=LoadBalancer \
---set enterprise.enabled=true \
---set enterprise.portal.enabled=false \
---set enterprise.rbac.enabled=false \
---set enterprise.smtp.enabled=false \
---set manager.enabled=true \
---set manager.type=LoadBalancer \
---set secretVolumes[0]=kong-cluster-cert \
---set postgresql.enabled=true \
---set postgresql.postgresqlUsername=kong \
---set postgresql.postgresqlDatabase=kong \
---set postgresql.postgresqlPassword=kong
-
+helm install kong kong/kong -n kong -f hybridKong/kong-hybrid-cp-values.yaml 
 ```
 
 ### Validating the Installation
@@ -117,28 +83,7 @@ kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster
 
 ### Installing Kong Data Plane
 ```
-helm install kong-dp kong/kong -n kong-dp \
---set ingressController.enabled=false \
---set image.repository=kong/kong-gateway \
---set image.tag=2.6.0.0-alpine \
---set env.database=off \
---set env.role=data_plane \
---set env.cluster_cert=/etc/secrets/kong-cluster-cert/tls.crt \
---set env.cluster_cert_key=/etc/secrets/kong-cluster-cert/tls.key \
---set env.lua_ssl_trusted_certificate=/etc/secrets/kong-cluster-cert/tls.crt \
---set env.cluster_control_plane=kong-kong-cluster.kong.svc.cluster.local:8005 \
---set env.cluster_telemetry_endpoint=kong-kong-clustertelemetry.kong.svc.cluster.local:8006 \
---set proxy.enabled=true \
---set proxy.type=LoadBalancer \
---set enterprise.enabled=true \
---set enterprise.portal.enabled=false \
---set enterprise.rbac.enabled=false \
---set enterprise.smtp.enabled=false \
---set manager.enabled=false \
---set portal.enabled=false \
---set portalapi.enabled=false \
---set env.status_listen=0.0.0.0:8100 \
---set secretVolumes[0]=kong-cluster-cert
+helm install kong-dp kong/kong -n kong-dp -f hybridKong/kong-hybrid-dp-values.yaml
 ```
 
 ### Validating the Installation

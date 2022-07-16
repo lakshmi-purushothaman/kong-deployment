@@ -1,0 +1,33 @@
+ingressController:
+  enabled: false
+image:
+  repository: kong/kong-gateway
+  tag: 2.6.0.0-alpine 
+secretVolumes:
+- kong-cluster-cert
+env:
+  database: "off"
+  role: data_plane
+  cluster_cert: /etc/secrets/kong-cluster-cert/tls.crt
+  cluster_cert_key: /etc/secrets/kong-cluster-cert/tls.key
+  lua_ssl_trusted_certificate: /etc/secrets/kong-cluster-cert/tls.crt
+  cluster_control_plane: kong-kong-cluster.kong.svc.cluster.local:8005
+  cluster_telemetry_endpoint: kong-kong-clustertelemetry.kong.svc.cluster.local:8006 
+  status_listen: 0.0.0.0:8100
+proxy:
+  enabled: true
+  type: LoadBalancer
+manager: 
+  enabled: false
+postgresql: 
+  enabled: true 
+  auth:
+    username: kong
+    database: kong
+    password: kong
+enterprise: 
+  enabled: true
+portal: 
+  enabled: false 
+portalapi: 
+  enabled: false
