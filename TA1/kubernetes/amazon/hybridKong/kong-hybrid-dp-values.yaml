@@ -19,12 +19,6 @@ proxy:
   type: LoadBalancer
 manager: 
   enabled: false
-postgresql: 
-  enabled: true 
-  auth:
-    username: kong
-    database: kong
-    password: kong
 enterprise: 
   enabled: true
 portal: 
