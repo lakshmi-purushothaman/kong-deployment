@@ -50,27 +50,30 @@ spec:
   # Default port used by the image
   - port: 5678
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: example-ingress
-spec:
-  #ingressClassName: kong
-  rules:
-  - http:
-      paths:
-      - pathType: Prefix
-        path: "/foo"
-        backend:
-          service:
-            name: foo-service
-            port:
-              number: 5678
-      - pathType: Prefix
-        path: "/bar"
-        backend:
-          service:
-            name: bar-service
-            port:
-              number: 5678
----
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: example-ingress
+#   annotations:
+#     konghq.com/strip-path: "true"
+#     kubernetes.io/ingress.class: "kong"
+# spec:
+#   ingressClassName: kong
+#   rules:
+#   - http:
+#       paths:
+#       - pathType: Prefix
+#         path: "/foo"
+#         backend:
+#           service:
+#             name: foo-service
+#             port:
+#               number: 5678
+#       - pathType: Prefix
+#         path: "/bar"
+#         backend:
+#           service:
+#             name: bar-service
+#             port:
+#               number: 5678
+# ---

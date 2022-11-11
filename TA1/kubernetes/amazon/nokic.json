@@ -1,0 +1,66 @@
+{
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+        "annotations": {
+            "meta.helm.sh/release-name": "kong",
+            "meta.helm.sh/release-namespace": "kong"
+        },
+        "creationTimestamp": "2022-07-30T20:55:09Z",
+        "finalizers": [
+            "service.kubernetes.io/load-balancer-cleanup"
+        ],
+        "labels": {
+            "app.kubernetes.io/instance": "kong",
+            "app.kubernetes.io/managed-by": "Helm",
+            "app.kubernetes.io/name": "kong",
+            "app.kubernetes.io/version": "2.8",
+            "helm.sh/chart": "kong-2.11.0"
+        },
+        "name": "kong-kong-admin",
+        "namespace": "kong",
+        "resourceVersion": "53222",
+        "uid": "dbc1315e-4089-4a79-801e-f6a622d065a0"
+    },
+    "spec": {
+        "allocateLoadBalancerNodePorts": true,
+        "clusterIP": "10.100.165.50",
+        "clusterIPs": [
+            "10.100.165.50"
+        ],
+        "externalTrafficPolicy": "Cluster",
+        "internalTrafficPolicy": "Cluster",
+        "ipFamilies": [
+            "IPv4"
+        ],
+        "ipFamilyPolicy": "SingleStack",
+        "ports": [
+            {
+                "appProtocol": "http",
+                "name": "kong-admin",
+                "nodePort": 32416,
+                "port": 8001,
+                "protocol": "TCP",
+                "targetPort": 8001
+            },
+            {
+                "appProtocol": "https",
+                "name": "kong-admin-tls",
+                "nodePort": 31078,
+                "port": 8444,
+                "protocol": "TCP",
+                "targetPort": 8444
+            }
+        ],
+        "selector": {
+            "app.kubernetes.io/component": "app",
+            "app.kubernetes.io/instance": "kong",
+            "app.kubernetes.io/name": "kong"
+        },
+        "sessionAffinity": "None",
+        "type": "LoadBalancer"
+    },
+    "status": {
+        "loadBalancer": {}
+    }
+}

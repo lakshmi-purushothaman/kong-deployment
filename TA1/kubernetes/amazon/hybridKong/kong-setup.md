@@ -53,6 +53,9 @@ kubectl get all -n kong
 #### Checking the Admin API
 ```
 echo "export CONTROL_PLANE_LB=$(kubectl get service kong-kong-admin \-\-output=jsonpath='{.status.loadBalancer.ingress[0].hostname}' -n kong)" >> ~/.bashrc
+#For test
+echo "export CONTROL_PLANE_LB=$(kubectl get svc -n kong | grep admin | awk '{print $3}')" >> ~/.bashrc
+
 bash
 
 echo $CONTROL_PLANE_LB
@@ -108,3 +111,23 @@ echo $DATA_PLANE_LB
 curl $DATA_PLANE_LB
 
 ```
+
+curl -X POST $CONTROL_PLANE_LB:8001/services -F 'name=mock_service' -F 'url=http://mockbin.org'
+
+curl -X POST -H "Content-Type: application/json" \
+    -d '{"name": "mock", "hosts": ["localhost"], "paths":["/mock"]}' \
+    $CONTROL_PLANE_LB:8001/services/mock_service/routes
+
+curl --proxy $DATA_PLANE_LB:8000 localhost/mock apikey:JoePassword
+
+
+aws eks describe-cluster \
+ --name kong-ta2-eks \
+ --query "cluster.identity.oidc.issuer" \
+ --output text
+
+ kubectl annotate serviceaccount ebs-csi-controller-sa \
+    -n kube-system \
+    eks.amazonaws.com/role-arn=arn:aws:iam::680765974998:role/AmazonEKS_EBS_CSI_DriverRole
+
+aws eks  associate-identity-provider-config  --cluster=kong-ta2-eks --region eu-west-2 --approve

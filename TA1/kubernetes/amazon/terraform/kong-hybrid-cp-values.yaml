@@ -9,11 +9,12 @@ image:
   tag: 2.8-alpine 
 secretVolumes:
 - kong-cluster-cert
-env:  
+env:
   database: postgres
   role: control_plane
   cluster_cert: /etc/secrets/kong-cluster-cert/tls.crt
   cluster_cert_key: /etc/secrets/kong-cluster-cert/tls.key
+  pg_host: kong-postgresql.kong.svc.cluster.local
 cluster:
   enabled: true
   volumePermissions: 
@@ -44,6 +45,7 @@ postgresql:
     tag: 11.17.0
   volumePermissions:
     enabled: true
+  #host: kong-postgres.kong.svc.cluster.local
   auth:
     username: kong
     database: kong
