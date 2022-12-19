@@ -24,3 +24,7 @@ portal:
   enabled: false 
 portalapi: 
   enabled: false
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
+  

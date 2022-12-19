@@ -118,7 +118,7 @@ curl -X POST -H "Content-Type: application/json" \
     -d '{"name": "mock", "hosts": ["localhost"], "paths":["/mock"]}' \
     $CONTROL_PLANE_LB:8001/services/mock_service/routes
 
-curl --proxy $DATA_PLANE_LB:8000 localhost/mock apikey:JoePassword
+curl --proxy $DATA_PLANE_LB:8000 localhost/mock 
 
 
 aws eks describe-cluster \

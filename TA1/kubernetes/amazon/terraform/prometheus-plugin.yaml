@@ -1,0 +1,8 @@
+kind: KongClusterPlugin
+apiVersion: configuration.konghq.com/v1
+metadata:
+  name: prometheus
+  namespace: kong-dp
+  labels:
+    global: "true"
+plugin: prometheus

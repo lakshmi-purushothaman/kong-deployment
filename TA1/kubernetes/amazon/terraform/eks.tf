@@ -14,10 +14,18 @@ module "eks" {
 
   enable_irsa = true
 
+  cluster_addons = {
+    vpc-cni = {
+      resolve_conflicts        = "OVERWRITE"
+      service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
+    }
+  }
+
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
     disk_size      = 50
+    # iam_role_attach_cni_policy = false
   }
 
   eks_managed_node_groups = {
@@ -43,7 +51,26 @@ module "eks" {
 
 }
 
+module "vpc_cni_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+
+  role_name             = "vpc_cni"
+  attach_vpc_cni_policy = true
+  vpc_cni_enable_ipv4   = true
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:aws-node"]
+    }
+  }
+}
+
 data "aws_eks_cluster" "default" {
+  name = module.eks.cluster_id
+}
+
+data "aws_eks_cluster_auth" "default" {
   name = module.eks.cluster_id
 }
 
