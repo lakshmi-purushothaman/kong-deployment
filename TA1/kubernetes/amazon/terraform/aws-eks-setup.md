@@ -6,7 +6,7 @@
 ```
 docker run -it --name "kong-hybrid" --rm -v ${PWD}:/work -w /work --entrypoint /bin/sh amazon/aws-cli:latest
 
-docker exec -it "kong-hybrid"  -v ${PWD}:/work -w /work --entrypoint /bin/sh amazon/aws-cli:latest
+docker exec -it "kong-hybrid"  --entrypoint /bin/sh amazon/aws-cli:latest
 
 yum install jq gzip nano tar git openssl unzip
 ```

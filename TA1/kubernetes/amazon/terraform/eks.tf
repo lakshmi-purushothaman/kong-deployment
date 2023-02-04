@@ -5,38 +5,61 @@ module "eks" {
   cluster_name    = var.cluster_name
   cluster_version = "1.22"
 
-  subnet_ids         = module.vpc.public_subnets
+  subnet_ids         = module.vpc.private_subnets
   
   vpc_id = module.vpc.vpc_id
 
-  cluster_endpoint_private_access = false 
+  cluster_endpoint_private_access = true 
   cluster_endpoint_public_access  = true
 
   enable_irsa = true
 
-  cluster_addons = {
-    vpc-cni = {
-      resolve_conflicts        = "OVERWRITE"
-      service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
-    }
-  }
-
-  # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
-    ami_type       = "AL2_x86_64"
-    disk_size      = 50
-    # iam_role_attach_cni_policy = false
-  }
+      disk_size = 50
+    }
 
-  eks_managed_node_groups = {
-      green={
-        name           = "worker-group-1"
-        instance_type  = "t2.small"
-        min_size       = 1
-        max_size       = 3
-        desired_size   = 2      
+    eks_managed_node_groups = {
+      general = {
+        desired_size = 1
+        min_size     = 1
+        max_size     = 10
+
+        labels = {
+          role = "general"
+        }
+
+        instance_types = ["t3.small"]
+        capacity_type  = "ON_DEMAND"
       }
-  }
+    }
+
+    tags = {
+      Environment = "staging"
+    }
+
+  # cluster_addons = {
+  #   vpc-cni = {
+  #     resolve_conflicts        = "OVERWRITE"
+  #     service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
+  #   }
+  # }
+
+  # # EKS Managed Node Group(s)
+  # eks_managed_node_group_defaults = {
+  #   ami_type       = "AL2_x86_64"
+  #   disk_size      = 50
+  #   # iam_role_attach_cni_policy = false
+  # }
+
+  # eks_managed_node_groups = {
+  #     green={
+  #       name           = "worker-group-1"
+  #       instance_type  = "t2.small"
+  #       min_size       = 1
+  #       max_size       = 3
+  #       desired_size   = 2      
+  #     }
+  # }
   
   node_security_group_additional_rules = {
     ingress_allow_access_from_control_plane = {
@@ -51,20 +74,20 @@ module "eks" {
 
 }
 
-module "vpc_cni_irsa" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+# module "vpc_cni_irsa" {
+#   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
-  role_name             = "vpc_cni"
-  attach_vpc_cni_policy = true
-  vpc_cni_enable_ipv4   = true
+#   role_name             = "vpc_cni"
+#   attach_vpc_cni_policy = true
+#   vpc_cni_enable_ipv4   = true
 
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:aws-node"]
-    }
-  }
-}
+#   oidc_providers = {
+#     main = {
+#       provider_arn               = module.eks.oidc_provider_arn
+#       namespace_service_accounts = ["kube-system:aws-node"]
+#     }
+#   }
+# }
 
 data "aws_eks_cluster" "default" {
   name = module.eks.cluster_id

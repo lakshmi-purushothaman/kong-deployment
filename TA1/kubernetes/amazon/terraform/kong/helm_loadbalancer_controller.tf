@@ -8,7 +8,8 @@ module "aws_load_balancer_controller_irsa_role" {
 
   oidc_providers = {
     ex = {
-      provider_arn               = module.eks.oidc_provider_arn
+      provider_arn               = data.terraform_remote_state.global_networking.outputs.cluster.oidc_provider_arn
+      #provider_arn               = module.eks.oidc_provider_arn
       namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
     }
   }
@@ -29,7 +30,7 @@ resource "helm_release" "aws_load_balancer_controller" {
 
   set {
     name  = "clusterName"
-    value = module.eks.cluster_id
+    value = data.terraform_remote_state.global_networking.outputs.cluster_id
   }
 
   set {
