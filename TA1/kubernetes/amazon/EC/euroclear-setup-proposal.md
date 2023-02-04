@@ -24,12 +24,14 @@ There could be many reasons for the desire to modernize the legacy application; 
 - Loose Coupling </br>
     - Loose coupling between components/services
     - Independently deployable and scalable
-- Elastic scalability
-- Cloud native architectural patterns - Microservices, Stateless, Event Driven Architecture (EDA)
-
+- Build Cloud native applications</br>
+    - Event driven microservices
+    - Statelessness
+    - Circuit Breakers and API Gateways
+    - Interaction Redundancy - 
 #### Architecture Blueprint
 
-![High Level Architecture](TA1/kubernetes/amazon/terraform/Architecture_2023-02-04_22-41-47.png)
+![High Level Architecture](/TA1/kubernetes/amazon/EC/Architecture.png)
 
 ### Key architectural considerations
 These considerations will act as guide rails to make architectural decisions
@@ -70,7 +72,7 @@ Defining key principles is critical, some of the EDA and microservices patters a
         - Connect domain events to reactions i.e., Reactions are actions and results following an event
     - Group similar modules (Bounded Contexts), this will help in identifying the domains
 
-    << Timeline view diagram of event storming >>
+![Event Storming](/TA1/kubernetes/amazon/EC/Event-Storming.png)
 - Team structure </br>
     If the engineering teams are geographically split, then the team co-located can work on a single service
  - Rate of Delivery </br>
@@ -80,7 +82,7 @@ Defining key principles is critical, some of the EDA and microservices patters a
  - Scalability </br>
     - Separating the service that needs to scale (horizntal or vertical) needs to be separated
     - The insights in terms of topic consumption, resource utilization can also help in identifying the services that needs to be separated
- 
+![Microservice Identification](/TA1/kubernetes/amazon/EC/Identifying-Microservices.png) 
 
      
 
