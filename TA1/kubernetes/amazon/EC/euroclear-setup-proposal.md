@@ -12,9 +12,9 @@
         - Adoption of DevOps(CI/CD)
         - Containerisation 
 
-### High level target architecture
+## High level target architecture
 
-#### Key Considerations/Assumptions
+### Key Considerations/Assumptions
 
 There could be many reasons for the desire to modernize the legacy application; For the purpose of this proposition, key focus would be on:
 - Agility in development process, by adopting </br>
@@ -29,7 +29,7 @@ There could be many reasons for the desire to modernize the legacy application; 
     - Statelessness
     - Circuit Breakers and API Gateways
     - Interaction Redundancy - Retries and other control loops
-#### Architecture Blueprint
+### Architecture Blueprint
 
 ![High Level Architecture](/TA1/kubernetes/amazon/EC/Architecture.png)
 
@@ -81,10 +81,14 @@ Defining key principles is critical, some of the EDA and microservices patters a
     Isolating a critical component service in it's own dedicated deployment unit, would be more appropriate
  - Scalability </br>
     - Separating the service that needs to scale (horizntal or vertical) needs to be separated
-    - The insights in terms of topic consumption, resource utilization can also help in identifying the services that needs to be separated
+    - The insights in terms of topic consumption, resource utilization can also help in identifying the services that needs to be separated</br>
+
 ![Microservice Identification](/TA1/kubernetes/amazon/EC/Identifying-Microservices.png) 
 
      
+### Migration strategy
+
+![Migration strategy](/TA1/kubernetes/amazon/EC/Migration-Stage.png)
 
 
 
