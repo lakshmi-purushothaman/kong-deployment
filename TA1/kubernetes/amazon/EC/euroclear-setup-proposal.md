@@ -31,7 +31,11 @@ There could be many reasons for the desire to modernize the legacy application; 
     - Interaction Redundancy - 
 #### Architecture Blueprint
 
+<<<<<<< HEAD:TA1/kubernetes/amazon/EC/euroclear-setup-proposal.md
 ![High Level Architecture](/TA1/kubernetes/amazon/EC/Architecture.png)
+=======
+![High Level Architecture](/TA1/kubernetes/amazon/terraform/Architecture_2023-02-04_22-41-47.png)
+>>>>>>> 73c95db9d93b7be71d751e4966e66c42a9801fe2:TA1/kubernetes/amazon/terraform/euroclear-setup-proposal.md
 
 ### Key architectural considerations
 These considerations will act as guide rails to make architectural decisions
