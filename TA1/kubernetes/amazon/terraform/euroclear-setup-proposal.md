@@ -29,7 +29,7 @@ There could be many reasons for the desire to modernize the legacy application; 
 
 #### Architecture Blueprint
 
-![High Level Architecture](TA1/kubernetes/amazon/terraform/Architecture_2023-02-04_22-41-47.png)
+![High Level Architecture](/TA1/kubernetes/amazon/terraform/Architecture_2023-02-04_22-41-47.png)
 
 ### Key architectural considerations
 These considerations will act as guide rails to make architectural decisions
