@@ -2,6 +2,7 @@
 
 ## High Level Summary
 
+![Stages](/TA1/kubernetes/amazon/EC/States.png)
 - Modernisation of a large legacy centralised (monolithic) mission critical application running on HPE NonStop technology developed in a non-modern programming language (COBOL) using messaging middleware (IBM MQ) as the communication back-bone.
 - A key part of this modernisation is to migrate this monolithic application from HPE NonStop proprietary platform to a modern platform
     - Firstly to migrate from HPE NonStop proprietary platform (Guardian) to HPE NonStop Linux like platform (OSS)
@@ -17,34 +18,37 @@
 ### Key Considerations/Assumptions
 
 There could be many reasons for the desire to modernize the legacy application; For the purpose of this proposition, key focus would be on:
-- Agility in development process, by adopting </br>
-    - Devops processes like workflow automation using CI/CD pipelines, test automation
-    - Infrastructure automation - Elastic infrastructure, Containers 
-    - Support for Polyglot programming
 - Loose Coupling </br>
-    - Loose coupling between components/services
+    - Loose coupling between components/services and infrastructure
     - Independently deployable and scalable
 - Build Cloud native applications</br>
     - Event driven microservices
     - Statelessness
     - Circuit Breakers and API Gateways
     - Interaction Redundancy - Retries and other control loops
+- Agility in development process, by adopting </br>
+    - Devops processes like workflow automation using CI/CD pipelines, test automation
+    - Infrastructure automation - Elastic infrastructure, Containers 
+    - Support for Polyglot programming
+
 ### Architecture Blueprint
+
+By combinining EDA and microservices architecture style, we can achieve non-functional qualities such as performance, scalability, availability, resiliency, and ease of development.
 
 ![High Level Architecture](/TA1/kubernetes/amazon/EC/Architecture.png)
 
 ### Key architectural considerations
-These considerations will act as guide rails to make architectural decisions
+These considerations will act as guide rails to make architectural decisions, which will influence the architecture of the system
 - Architectural Patterns </br>
-Defining key principles is critical, some of the EDA and microservices patters are:
-    - Pipes and Filters
     - Command Query Responsibility Segregation (CQRS)
     - Saga (Orchestration or Choreography)
     - Event Outbox and Inbox - Enables handling distributed transactions and idempotent consumers
     - Dead Letter Queue
     - Service Mesh
     - Event Sourcing
-- Technology Stack
+    - Stream Processing
+- Technology Stack </br>
+    This is the backbone for key architectural qualities (performance, availability, reliability, operating cost, fault-tolerance, and so on) and simplifies development.
     - High availability
         Different availability zones or regions, fault-tolerant, data replication, rolling upgrades
     - Scalability
@@ -55,10 +59,18 @@ Defining key principles is critical, some of the EDA and microservices patters a
         - Partitionag and preserving the order of events
     - Low operational cost
     - Polyglot Programming
-- Event Modelling
-- Event Processing Topology
-- Deployment Topology
-- Exception Handling Strategy
+- Event Modelling </br>
+    Define Event Types, Event Schema, Versioning, Establish Serialization format (AVRO, JOSN,..), Define Partitioning strategy, Ordering and Durability
+- Deployment Topology </br>
+    - Each deployed component should be independently scalable and deployed as cluster to support concurrency and resilience
+    - Cluster spanning across multiple AZ's
+    - Establish Replication factor
+    - Workload Throttling
+    - Encryption
+- Exception Handling Strategy </br>
+    - Exception logging
+    - Retry strategy (Number of retries, time between retries)
+    - Raising Alerts
 
 
 ### Breaking down the monolith key principles
@@ -91,5 +103,19 @@ Defining key principles is critical, some of the EDA and microservices patters a
 ![Migration strategy](/TA1/kubernetes/amazon/EC/Migration-Stage.png)
 
 
+### Stakeholders Engagement
+
+- Identifying key stakeholders and clear definition of roles
+- Establishing Framework and tool implementation 
+    - Agreement of tools to be used for demand management, architecture repository (Github, Confluence,..) for diagarms and documents
+    - Create example templates
+- Setting up Architecture Review Board catchups
+    - Establish ARB memebers list and roles
+    - Build Enterprise Reference Architecture
+    - Establish review process, feedback mechanism and approval process
+- Consistent and Continuous engagement with business/product owners
 
 
+### Expected deliverables and budgets
+
+<<TBD>>
