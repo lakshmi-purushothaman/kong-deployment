@@ -32,7 +32,7 @@ module "eks" {
         capacity_type  = "ON_DEMAND"
       }
     }
-
+    manage_aws_auth_configmap = true
     tags = {
       Environment = "staging"
     }
