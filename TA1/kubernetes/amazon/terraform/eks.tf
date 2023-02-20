@@ -1,41 +1,41 @@
 module "eks" {
-  source       = "terraform-aws-modules/eks/aws"
+  source  = "terraform-aws-modules/eks/aws"
   version = "18.26.6"
 
   cluster_name    = var.cluster_name
   cluster_version = "1.22"
 
-  subnet_ids         = module.vpc.private_subnets
-  
+  subnet_ids = module.vpc.private_subnets
+
   vpc_id = module.vpc.vpc_id
 
-  cluster_endpoint_private_access = true 
+  cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
 
   enable_irsa = true
 
   eks_managed_node_group_defaults = {
-      disk_size = 50
-    }
+    disk_size = 50
+  }
 
-    eks_managed_node_groups = {
-      general = {
-        desired_size = 1
-        min_size     = 1
-        max_size     = 10
+  eks_managed_node_groups = {
+    general = {
+      desired_size = 1
+      min_size     = 1
+      max_size     = 10
 
-        labels = {
-          role = "general"
-        }
-
-        instance_types = ["t3.small"]
-        capacity_type  = "ON_DEMAND"
+      labels = {
+        role = "general"
       }
+
+      instance_types = ["t3.small"]
+      capacity_type  = "ON_DEMAND"
     }
-    manage_aws_auth_configmap = true
-    tags = {
-      Environment = "staging"
-    }
+  }
+  manage_aws_auth_configmap = true
+  tags = {
+    Environment = "staging"
+  }
 
   # cluster_addons = {
   #   vpc-cni = {
@@ -60,7 +60,7 @@ module "eks" {
   #       desired_size   = 2      
   #     }
   # }
-  
+
   node_security_group_additional_rules = {
     ingress_allow_access_from_control_plane = {
       type                          = "ingress"
