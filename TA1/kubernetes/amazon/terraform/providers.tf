@@ -4,15 +4,15 @@ provider "aws" {
 }
 
 terraform {
+  required_version = "~> 1.3.0"
   required_providers {
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.14.0"
+    }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.0.1"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.10.0"
+      version = ">= 2.6.0"
     }
   }
-  required_version = "~> 1.4.0"
 }

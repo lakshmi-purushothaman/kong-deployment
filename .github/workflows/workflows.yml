@@ -19,6 +19,7 @@ jobs:
       AWS_REGION: 'eu-west-2'
 
     strategy:
+      max-parallel: 1
       matrix:
         folder: ['.', 'kong']
 
