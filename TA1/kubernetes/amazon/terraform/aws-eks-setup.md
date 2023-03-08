@@ -37,6 +37,8 @@ Default output format [None]: json
 # Get Terraform
 
 curl -o /tmp/terraform.zip -LO https://releases.hashicorp.com/terraform/1.3.0/terraform_1.3.0_linux_amd64.zip
+
+curl -o /tmp/terraform.zip -LO https://releases.hashicorp.com/terraform/1.4.0-beta2/terraform_1.4.0-beta2_linux_arm64.zip
 unzip /tmp/terraform.zip
 chmod +x terraform && mv terraform /usr/local/bin/
 terraform
