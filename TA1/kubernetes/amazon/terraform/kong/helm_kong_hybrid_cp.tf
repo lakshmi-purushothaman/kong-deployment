@@ -11,8 +11,8 @@ resource "kubernetes_secret" "kong-cluster-cert" {
 
   }
   data = {
-    "tls.crt" = file("${path.cwd}/certs/cluster.crt")
-    "tls.key" = file("${path.cwd}/certs/cluster.key")
+    "tls.crt" = file("${var.kong_crt_file_path}/certs/cluster.crt")
+    "tls.key" = file("${var.kong_crt_file_path}/certs/cluster.key")
   }
  
   type = "kubernetes.io/tls"

@@ -42,3 +42,8 @@ variable "kong_cp_namespace" {
 variable "kong_dp_namespace" {
   default = "kong-dp"
 }
+
+variable "kong_crt_file_path" {
+  default = "$(path.module)/TA1/kubernetes/amazon/terraform/kong"
+}
+
