@@ -36,7 +36,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform -chdir=${{ matrix.folder }} init -upgrade
+        run: terraform -chdir=${{ matrix.folder }} init
         #run: terraform init
 
       - name: Terraform Validate
