@@ -11,8 +11,8 @@ resource "kubernetes_secret" "kong-cluster-cert" {
 
   }
   data = {
-    "tls.crt" = "${file("${var.kong_rt_file_path}/certs/cluster.crt")}"
-    "tls.key" = "${file("${var.kong_rt_file_path}/certs/cluster.key")}"
+    "tls.crt" = "${file("/kong/certs/cluster.crt")}"
+    "tls.key" = "${file("/kong/certs/cluster.key")}"
   }
  
   type = "kubernetes.io/tls"
@@ -29,6 +29,6 @@ resource "helm_release" "kong" {
   namespace  = var.kong_cp_namespace
 
   values = [
-    "${file("${var.kong_rt_file_path}/kong-hybrid-cp-values.yaml")}"
+    "${file("/kong-hybrid-cp-values.yaml")}"
   ]
 }
