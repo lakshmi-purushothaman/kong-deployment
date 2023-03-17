@@ -1,4 +1,4 @@
-name: "Terraform"
+name: "Python Web App"
 
 on:
   push:
@@ -7,22 +7,16 @@ on:
   pull_request:
 
 jobs:
-  create-infra:
-    name: "Setup Infrastructure"
+  deploy-web-app:
+    name: "Deploy Web App"
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: TA1/kubernetes/amazon/terraform
+        working-directory: TA1/kubernetes/amazon/terraform/python-web-app
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: 'eu-west-2'
-
-    strategy:
-      max-parallel: 1
-      matrix:
-        folder: ['.', 'kong']
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -83,6 +77,15 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
+      - name: Publish to Docker Hub
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        uses: docker/build-push-action@v1
+        with: 
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: lakshmips/devops-python-web-app
+          tags: latest, ${{ github.run_number }}
+          
       - name: Terraform Apply
         id: apply
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
