@@ -6,7 +6,7 @@ resource "kubernetes_namespace" "python-web-app" {
 
 resource "kubernetes_secret" "docker-hub-reg" {
   metadata {
-    name = "docker-hub-secret"
+    name      = "docker-hub-secret"
     namespace = var.python_web_app_namespace
 
   }
@@ -22,6 +22,5 @@ resource "kubernetes_secret" "docker-hub-reg" {
       }
     })
   }
-
   type = "kubernetes.io/dockerconfigjson"
 }
