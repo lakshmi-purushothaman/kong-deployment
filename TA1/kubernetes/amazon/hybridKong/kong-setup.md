@@ -108,7 +108,7 @@ bash
 
 echo $DATA_PLANE_LB
 
-curl $DATA_PLANE_LB
+curl $DATA_PLANE_LB 
 
 ```
 

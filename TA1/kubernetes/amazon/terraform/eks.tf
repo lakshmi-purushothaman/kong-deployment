@@ -60,6 +60,7 @@ module "eks" {
   #       desired_size   = 2      
   #     }
   # }
+  #
 
   node_security_group_additional_rules = {
     ingress_allow_access_from_control_plane = {
