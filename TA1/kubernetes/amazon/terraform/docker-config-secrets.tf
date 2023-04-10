@@ -25,7 +25,7 @@ resource "kubernetes_secret" "docker-hub-reg" {
     ".dockerconfigjson" = jsonencode({
       auths = {
         "${var.registry_server}" = {
-          "username" = local.docker_creds.docker_registry_username 
+          "username" = local.docker_creds.docker_registry_username
           "password" = local.docker_creds.docker_registry_password
           "email"    = local.docker_creds.docker_registry_email
           "auth"     = base64encode("${local.docker_creds.docker_registry_username}:${local.docker_creds.docker_registry_password}")
