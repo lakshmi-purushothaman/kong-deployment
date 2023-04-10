@@ -4,6 +4,17 @@ resource "kubernetes_namespace" "python-web-app" {
   }
 }
 
+data "aws_secretsmanager_secret_version" "docker_creds" {
+  # Fill in the name you gave to your secret
+  secret_id = "docker_config_secret"
+}
+
+locals {
+  docker_creds = jsondecode(
+    data.aws_secretsmanager_secret_version.docker_creds.secret_string
+  )
+}
+
 resource "kubernetes_secret" "docker-hub-reg" {
   metadata {
     name      = "docker-hub-secret"
@@ -14,10 +25,10 @@ resource "kubernetes_secret" "docker-hub-reg" {
     ".dockerconfigjson" = jsonencode({
       auths = {
         "${var.registry_server}" = {
-          "username" = var.registry_username
-          "password" = var.registry_password
-          "email"    = var.registry_email
-          "auth"     = base64encode("${var.registry_username}:${var.registry_password}")
+          "username" = local.docker_creds.docker_registry_username 
+          "password" = local.docker_creds.docker_registry_password
+          "email"    = local.docker_creds.docker_registry_email
+          "auth"     = base64encode("${local.docker_creds.docker_registry_username}:${local.docker_creds.docker_registry_password}")
         }
       }
     })

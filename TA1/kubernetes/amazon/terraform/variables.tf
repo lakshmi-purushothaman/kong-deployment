@@ -50,15 +50,3 @@ variable "python_web_app_namespace" {
 variable "registry_server" {
   default = "https://hub.docker.com/"
 }
-
-variable "registry_username" {
-  default = "lakshmips"
-}
-
-variable "registry_password" {
-  default = "D0ntask@11"
-}
-
-variable "registry_email" {
-  default = "lakshmi.purushothamk@gmail.com"
-}
