@@ -21,7 +21,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        folder: ['.', 'kong']
+        folder: ['.']
 
     steps:
       - name: Checkout

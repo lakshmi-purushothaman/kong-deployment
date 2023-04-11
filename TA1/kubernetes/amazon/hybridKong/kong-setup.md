@@ -131,3 +131,71 @@ aws eks describe-cluster \
     eks.amazonaws.com/role-arn=arn:aws:iam::680765974998:role/AmazonEKS_EBS_CSI_DriverRole
 
 aws eks  associate-identity-provider-config  --cluster=kong-ta2-eks --region eu-west-2 --approve
+
+
+echo '
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo
+  annotations:
+    konghq.com/strip-path: "true"
+    kubernetes.io/ingress.class: kong
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /bar
+        pathType: Prefix
+        backend:
+          service:
+            name: echo
+            port: 
+              number: 80
+' | kubectl apply -f -
+
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=kong-ta2-eks \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set region=eu-west-2 \
+  --set vpcId=vpc-0b50c3a5c0c8718b4
+
+  cat >load-balancer-role-trust-policy.json <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": "arn:aws:iam::680765974998:oidc-provider/oidc.eks.eu-west-2.amazonaws.com/id/209D108987CB81917EB2020D51EDBDEB"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+                "StringEquals": {
+                    "oidc.eks.eu-west-2.amazonaws.com/id/209D108987CB81917EB2020D51EDBDEB:aud": "sts.amazonaws.com",
+                    "oidc.eks.eu-west-2.amazonaws.com/id/209D108987CB81917EB2020D51EDBDEB:sub": "system:serviceaccount:kube-system:aws-load-balancer-controller"
+                }
+            }
+        }
+    ]
+}
+EOF
+
+aws iam attach-role-policy \
+  --policy-arn arn:aws:iam::680765974998:policy/AWSLoadBalancerControllerIAMPolicy \
+  --role-name AmazonEKSLoadBalancerControllerRole
+
+  cat >aws-load-balancer-controller-service-account.yaml <<EOF
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: aws-load-balancer-controller
+  name: aws-load-balancer-controller
+  namespace: kube-system
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::680765974998:role/AmazonEKSLoadBalancerControllerRole
+EOF
